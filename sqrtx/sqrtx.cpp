@@ -4,25 +4,19 @@ public:
         if (x == 0)
             return 0;
 
-        long long currentNum = 1;
-        while(currentNum * currentNum <= x)
-            currentNum = currentNum * 2;
+        int start = 1, end = x;
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
+            long midSquare = (long) mid * mid;
 
-        int prevNum = currentNum / 2;
-        int lowerBound = prevNum;
-        while (prevNum <= currentNum) {
-            long long mid = (prevNum + currentNum ) / 2;
-
-            if (mid * mid == x)
+            if (midSquare == x)
                 return mid;
-            else if (mid * mid > x)
-                currentNum = mid - 1;
-            else {
-                    lowerBound = mid;
-                    prevNum = mid + 1;
-            }
+            else if (midSquare > x)
+                end = mid - 1;
+            else
+                start = mid + 1;
         }
 
-        return lowerBound;        
+        return end;
     }
 };
