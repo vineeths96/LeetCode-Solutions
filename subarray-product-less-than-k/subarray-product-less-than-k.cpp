@@ -1,19 +1,20 @@
 class Solution {
 public:
     int numSubarrayProductLessThanK(vector<int>& nums, int k) {
+        int arrayCount = 0;
         int product = 1;
-        int subArrayCount = 0;
 
-        for (int left = 0, right = 0; left < nums.size() && right < nums.size(); right++) {
+        for (int left = 0, right = 0; right < nums.size(); right++) {
             product = product * nums[right];
 
-            while (left < nums.size() && product >= k)
-                product = product / nums[left++];
+            while (left <= right && product >= k) {
+                product = product / nums[left];
+                left++;
+            }
 
-            if (left <= right)
-                subArrayCount += (right - left + 1);    
+            arrayCount += right - left + 1;
         }
 
-        return subArrayCount;
+        return arrayCount;
     }
 };
