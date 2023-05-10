@@ -1,24 +1,42 @@
 class Solution {
 public:
+    int getValidCharIndex(std::string str, int index) {
+        int backspaceCount = 0;
+        while (index >= 0) {
+            if (str[index] == '#')
+                backspaceCount++;
+            else {
+                if (backspaceCount == 0)
+                    break;
+
+                backspaceCount--;
+            }
+            index--;
+        }
+
+        return index;
+    }
+
     bool backspaceCompare(string s, string t) {
-        std::string S, T;
+        int firstIndex = s.size() - 1;
+        int secondIndex = t.size() - 1;
 
-        for (const char &ch : s) {
-            if (ch == '#') {
-                if (S.size())
-                    S.erase(S.length() - 1);
-            } else
-                S.push_back(ch);
+        while (firstIndex >= 0 || secondIndex >= 0) {
+            firstIndex = getValidCharIndex(s, firstIndex);
+            secondIndex = getValidCharIndex(t, secondIndex);
+
+            if (firstIndex < 0 && secondIndex < 0)
+                return true;
+            else if (firstIndex < 0 || secondIndex < 0)
+                return false;
+            else if (s[firstIndex] != t[secondIndex])
+                return false;
+            else {
+                firstIndex--;
+                secondIndex--;
+            }     
         }
 
-        for (const char &ch : t) {
-            if (ch == '#') {
-                if (T.size())
-                    T.erase(T.length() - 1);
-            } else
-                T.push_back(ch);
-        }
-
-        return S == T;
+        return true;
     }
 };
