@@ -28,10 +28,16 @@ public:
     }
 
     std::vector<std::vector<int>> kSum(const std::vector<int> nums, long long target, int index, int k) {
+        std::vector<std::vector<int>> kGroups;
+        if (index == nums.size())
+            return kGroups;
+
+        if (target / k < nums[index] || target / k > nums[nums.size() - 1])
+            return kGroups;
+
         if (k == 2)
             return twoSum(nums, target, index);
 
-        std::vector<std::vector<int>> kGroups;
         for (int i = index; i < nums.size(); i++) {
             if (i > index && nums[i] == nums[i-1])
                 continue;
