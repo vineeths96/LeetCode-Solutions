@@ -1,43 +1,53 @@
 class Solution {
 public:
-    vector<vector<int>> fourSum(vector<int>& nums, int target) {
-        std::vector<std::vector<int>> quadruplets;
+    std::vector<std::vector<int>> twoSum(const std::vector<int> &nums, long long target, int index) {
+        int start = index;
+        int end = nums.size() - 1;
 
-        std::sort(nums.begin(), nums.end());
-        for (int i = 0; i < nums.size(); i++) {
-            if (i > 0 && nums[i] == nums[i-1])
-                continue;
+        std::vector<std::vector<int>> tuples;
+        while (start < end) {
+            int currentSum = nums[start] + nums[end];
+            if (currentSum < target)
+                start++;
+            else if (currentSum > target)
+                end--;
+            else {
+                tuples.push_back({nums[start], nums[end]});
+                start++;
+                end--;
 
-            for (int j = i + 1; j < nums.size(); j++) {
-                if (j > i + 1 && nums[j] == nums[j-1])
-                    continue;
+                while (start < end && nums[start] == nums[start-1])
+                    start++;
 
-                int start = j + 1;
-                int end = nums.size() - 1;
-
-                while (start < end) {
-                    long currentSum = static_cast<long>(nums[i]) + static_cast<long>(nums[j])
-                                      + static_cast<long>(nums[start]) + static_cast<long>(nums[end]);
-
-                    if (currentSum < target)
-                        start++;
-                    else if (currentSum > target)
-                        end--;
-                    else {
-                        quadruplets.push_back({nums[i], nums[j], nums[start], nums[end]});
-                        start++;
-                        end--;
-
-                        while (start < end && nums[start] == nums[start-1])
-                            start++;
-
-                        while (start < end && nums[end] == nums[end+1])
-                            end--;
-                    }
-                }
+                while (start < end && nums[end] == nums[end+1])
+                    end--;
             }
         }
 
-        return quadruplets;
+        return tuples;
+    }
+
+    std::vector<std::vector<int>> kSum(const std::vector<int> nums, long long target, int index, int k) {
+        if (k == 2)
+            return twoSum(nums, target, index);
+
+        std::vector<std::vector<int>> kGroups;
+        for (int i = index; i < nums.size(); i++) {
+            if (i > index && nums[i] == nums[i-1])
+                continue;
+
+            auto subsets = kSum(nums, target - nums[i], i + 1, k - 1);
+            for (auto subset : subsets) {
+                subset.push_back(nums[i]);
+                kGroups.push_back(subset);
+            }
+        }
+
+        return kGroups;
+    }
+
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        std::sort(nums.begin(), nums.end());
+        return kSum(nums, static_cast<long long>(target), 0, 4);    
     }
 };
