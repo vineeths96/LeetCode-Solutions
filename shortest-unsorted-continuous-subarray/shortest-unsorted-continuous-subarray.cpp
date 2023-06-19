@@ -1,28 +1,23 @@
 class Solution {
 public:
     int findUnsortedSubarray(vector<int>& nums) {
-        std::stack<int> leftTracker;
-        int leftBoundary = nums.size() - 1;
+        int minSeen = std::numeric_limits<int>::max();
+        int maxSeen = std::numeric_limits<int>::min();
 
+        int rightBoundary = 0;
         for (int i = 0; i < nums.size(); i++) {
-            while (!leftTracker.empty() && nums[leftTracker.top()] > nums[i]) {
-                leftBoundary = std::min(leftBoundary, leftTracker.top());
-                leftTracker.pop();
-            }
+            maxSeen = std::max(maxSeen, nums[i]);
 
-            leftTracker.push(i);
+            if (maxSeen > nums[i])
+                rightBoundary = i;
         }
 
-        std::stack<int> rightTracker;
-        int rightBoundary = 0;
+        int leftBoundary = 0;
+        for (int i = nums.size() - 1; i >= 0 ; i--) {
+            minSeen = std::min(minSeen, nums[i]);
 
-        for (int i = nums.size() - 1; i >= 0; i--) {
-            while (!rightTracker.empty() && nums[rightTracker.top()] < nums[i]) {
-                rightBoundary = std::max(rightBoundary, rightTracker.top());
-                rightTracker.pop();
-            }
-
-            rightTracker.push(i);
+            if (minSeen < nums[i])
+                leftBoundary = i;
         }
 
         return rightBoundary - leftBoundary > 0 ? rightBoundary - leftBoundary + 1 : 0;
