@@ -1,34 +1,30 @@
 class Solution {
 public:
     int findUnsortedSubarray(vector<int>& nums) {
-        std::vector<int> minArray(nums.size(), 0);
-        std::vector<int> maxArray(nums.size(), 0);
+        std::stack<int> leftTracker;
+        int leftBoundary = nums.size() - 1;
 
-        maxArray[0] = nums[0];
-        for (int i = 1; i < nums.size(); i++)
-            maxArray[i] = std::max(maxArray[i-1], nums[i]);
+        for (int i = 0; i < nums.size(); i++) {
+            while (!leftTracker.empty() && nums[leftTracker.top()] > nums[i]) {
+                leftBoundary = std::min(leftBoundary, leftTracker.top());
+                leftTracker.pop();
+            }
 
-        minArray[nums.size() - 1] = nums[nums.size() - 1];
-        for (int i = nums.size() - 2; i >= 0; i--)
-            minArray[i] = std::min(minArray[i+1], nums[i]);
-
-        int start = 0;
-        int end = nums.size() - 1;
-
-        while (start < end) {
-            if (nums[start] <= nums[start+1] && nums[start] <= minArray[start])
-                start++;
-            else
-                break;
+            leftTracker.push(i);
         }
 
-        while (start < end) {
-            if (nums[end] >= nums[end-1] && nums[end] >= maxArray[end])
-                end--;
-            else
-                break;
+        std::stack<int> rightTracker;
+        int rightBoundary = 0;
+
+        for (int i = nums.size() - 1; i >= 0; i--) {
+            while (!rightTracker.empty() && nums[rightTracker.top()] < nums[i]) {
+                rightBoundary = std::max(rightBoundary, rightTracker.top());
+                rightTracker.pop();
+            }
+
+            rightTracker.push(i);
         }
-        
-        return start == end ? 0 : end - start + 1;
+
+        return rightBoundary - leftBoundary > 0 ? rightBoundary - leftBoundary + 1 : 0;
     }
 };
