@@ -9,35 +9,35 @@ public:
                     continue;
 
                 int currentArea = 0;
-                std::stack<std::pair<int, int>> dfsStack;
-                dfsStack.push(std::make_pair(i, j));
+                std::queue<std::pair<int, int>> bfsQueue;
+                bfsQueue.push(std::make_pair(i, j));
                 grid[i][j] = 0;
 
-                while(!dfsStack.empty()) {
-                    auto top = dfsStack.top();
-                    dfsStack.pop();
+                while(!bfsQueue.empty()) {
+                    auto front = bfsQueue.front();
+                    bfsQueue.pop();
                     currentArea++;
 
-                    int x = top.first;
-                    int y = top.second;
+                    int x = front.first;
+                    int y = front.second;
 
                     if (x > 0 && grid[x-1][y] == 1) {
-                        dfsStack.push(std::make_pair(x - 1, y));
+                        bfsQueue.push(std::make_pair(x - 1, y));
                         grid[x-1][y] = 0;
                     }
 
                     if (x < grid.size() - 1 && grid[x+1][y] == 1) {
-                        dfsStack.push(std::make_pair(x + 1, y));
+                        bfsQueue.push(std::make_pair(x + 1, y));
                         grid[x+1][y] = 0;
                     }
 
                     if (y > 0 && grid[x][y-1] == 1) {
-                        dfsStack.push(std::make_pair(x, y - 1));
+                        bfsQueue.push(std::make_pair(x, y - 1));
                         grid[x][y-1] = 0;
                     }
 
                     if (y < grid[0].size() - 1 && grid[x][y+1] == 1) {
-                        dfsStack.push(std::make_pair(x, y + 1));
+                        bfsQueue.push(std::make_pair(x, y + 1));
                         grid[x][y+1] = 0;
                     }
                 }
