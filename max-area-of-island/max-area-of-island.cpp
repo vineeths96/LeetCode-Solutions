@@ -13,7 +13,7 @@ public:
                 bfsQueue.push(std::make_pair(i, j));
                 grid[i][j] = 0;
 
-                while(!bfsQueue.empty()) {
+                while (!bfsQueue.empty()) {
                     auto front = bfsQueue.front();
                     bfsQueue.pop();
                     currentArea++;
