@@ -18,26 +18,24 @@ public:
             int x = top.first;
             int y = top.second;
 
-            imageCopy[x][y] = color;
-
             if (x > 0 && imageCopy[x-1][y] == initialColor) {
                 dfsStack.push(std::make_pair(x - 1, y));
-                // imageCopy[x-1][y] = color;
+                imageCopy[x-1][y] = color;
             }
 
             if (x < imageCopy.size() - 1 && imageCopy[x+1][y] == initialColor) {
                 dfsStack.push(std::make_pair(x + 1, y));
-                // imageCopy[x+1][y] = color;
+                imageCopy[x+1][y] = color;
             }
 
             if (y > 0 && imageCopy[x][y-1] == initialColor) {
                 dfsStack.push(std::make_pair(x, y - 1));
-                // imageCopy[x][y-1] = color;
+                imageCopy[x][y-1] = color;
             }
             
             if (y < imageCopy[0].size() - 1 && imageCopy[x][y+1] == initialColor) {
                 dfsStack.push(std::make_pair(x, y + 1));
-                // imageCopy[x][y+1] = color;
+                imageCopy[x][y+1] = color;
             }
         }
 
