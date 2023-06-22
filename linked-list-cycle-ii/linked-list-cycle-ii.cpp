@@ -30,15 +30,18 @@ public:
         } while (slowPointer != fastPointer);
 
         ListNode *listCrawler = head;
-        while (listCrawler != nullptr) {
-            ListNode *runner = listCrawler;
-            for (int k = 0; k < loopLength; k++)
-                runner = runner->next;
+        ListNode *listCrawlerAhead = head;
 
-            if (runner == listCrawler)
+        for (int k = 0; k < loopLength; k++)
+            listCrawlerAhead = listCrawlerAhead->next;
+
+        while (listCrawlerAhead != nullptr) {
+            if (listCrawlerAhead == listCrawler)
                 return listCrawler;
-            else
+            else {
                 listCrawler = listCrawler->next;
+                listCrawlerAhead = listCrawlerAhead->next;
+            }
         }
 
         return nullptr;
