@@ -1,4 +1,22 @@
 class Solution {
+private:
+    int dfs(const std::vector<std::vector<int>> &grid, std::vector<std::vector<bool>> &visited, int x, int y) {
+        if (x < 0 || x >= grid.size() || y < 0 || y >= grid[0].size())
+            return 1;
+
+        if (grid[x][y] == 0)
+            return 1;
+
+        if (visited[x][y])
+            return 0;
+
+        visited[x][y] = true;
+        return dfs(grid, visited, x - 1, y) + 
+               dfs(grid, visited, x + 1, y) + 
+               dfs(grid, visited, x, y - 1) + 
+               dfs(grid, visited, x, y + 1); 
+    }
+
 public:
     int islandPerimeter(vector<vector<int>>& grid) {
         int rows = grid.size();
@@ -14,37 +32,7 @@ public:
                 if (visited[i][j])
                     continue;    
 
-                std::stack<std::pair<int, int>> dfsStack;
-                dfsStack.push(std::make_pair(i, j));
-                visited[i][j] = true;
-
-                while (!dfsStack.empty()) {
-                    auto top = dfsStack.top();
-                    dfsStack.pop();
-
-                    int x = top.first;
-                    int y = top.second;
-
-                    int dirx[] = {-1, 0, 1, 0};
-                    int diry[] = {0, -1, 0, 1};
-
-                    for (int k = 0; k < 4; k++) {
-                        int xdash = x + dirx[k];
-                        int ydash = y + diry[k];
-
-                        if (xdash < 0 || xdash >= grid.size() || y < 0 || ydash >= grid[0].size()) {
-                            perimeter++;
-                            continue;
-                        }
-                        
-                        if (grid[xdash][ydash] == 0)
-                            perimeter++;
-                        else if (!visited[xdash][ydash]) {
-                            dfsStack.push(std::make_pair(xdash, ydash));
-                            visited[xdash][ydash] = true;
-                        }
-                    }
-                }
+                perimeter += dfs(grid, visited, i, j);
             }
         }
 
