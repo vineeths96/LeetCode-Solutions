@@ -23,28 +23,22 @@ public:
                     int x = top.first;
                     int y = top.second;
 
-                    if (x > 0 && grid[x-1][y] == 1 && !visited[x-1][y]) {
-                        dfsStack.push(std::make_pair(x - 1, y));
-                        visited[x-1][y] = true;
-                        path.push_back(std::make_pair(time, 1));
-                    }
+                    int dirx[] = {1, 0, -1, 0};
+                    int diry[] = {0, 1, 0, -1};
 
-                    if (x < grid.size() - 1 && grid[x+1][y] == 1 && !visited[x+1][y]) {
-                        dfsStack.push(std::make_pair(x + 1, y));
-                        visited[x+1][y] = true;
-                        path.push_back(std::make_pair(time, 2));
-                    }
+                    for (int k = 0; k < 4; k++) {
+                        int xdash = x + dirx[k];
+                        int ydash = y + diry[k];
 
-                    if (y > 0 && grid[x][y-1] == 1 && !visited[x][y-1]) {
-                        dfsStack.push(std::make_pair(x, y - 1));
-                        visited[x][y-1] = true;
-                        path.push_back(std::make_pair(time, 3));
-                    }
+                        if (xdash < 0 || xdash >= grid.size() || ydash < 0 || ydash >= grid[0].size())
+                            continue;
 
-                    if (y < grid[0].size() - 1 && grid[x][y+1] == 1 && !visited[x][y+1]) {
-                        dfsStack.push(std::make_pair(x, y + 1));
-                        visited[x][y+1] = true;
-                        path.push_back(std::make_pair(time, 4));
+                        if (grid[xdash][ydash] == 1 && !visited[xdash][ydash]) {
+                            dfsStack.push(std::make_pair(xdash, ydash));
+                            visited[xdash][ydash] = true;
+                            path.push_back(std::make_pair(time, k));
+                        }
+
                     }
                 }
 
