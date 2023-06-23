@@ -13,13 +13,13 @@ private:
 
 public:
     bool isHappy(int n) {
-        int slowPointer = sumOfSquares(n);
-        int fastPointer = sumOfSquares(sumOfSquares(n));
+        int slowPointer = n;
+        int fastPointer = n;
 
-        while (fastPointer != slowPointer) {
+        do {
             slowPointer = sumOfSquares(slowPointer);
             fastPointer = sumOfSquares(sumOfSquares(fastPointer));
-        }
+        } while (fastPointer != slowPointer);
 
         return fastPointer == 1;
     }
