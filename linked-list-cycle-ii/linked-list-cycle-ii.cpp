@@ -34,15 +34,11 @@ public:
         for (int k = 0; k < loopLength; k++)
             listCrawlerAhead = listCrawlerAhead->next;
 
-        while (listCrawlerAhead != nullptr) {
-            if (listCrawlerAhead == listCrawler)
-                return listCrawler;
-            else {
-                listCrawler = listCrawler->next;
-                listCrawlerAhead = listCrawlerAhead->next;
-            }
+        while (listCrawlerAhead != listCrawler) {
+            listCrawler = listCrawler->next;
+            listCrawlerAhead = listCrawlerAhead->next;
         }
 
-        return nullptr;
+        return listCrawler;
     }
 };
