@@ -11,15 +11,19 @@ public:
     ListNode *detectCycle(ListNode *head) {
         ListNode *slowPointer = head;
         ListNode *fastPointer = head;
+        bool cycleFound = false;
 
         while (fastPointer != nullptr && fastPointer->next != nullptr) {          
             slowPointer = slowPointer->next;
             fastPointer = fastPointer->next->next;
 
-            if (slowPointer == fastPointer) break;
+            if (slowPointer == fastPointer) {
+                cycleFound = true;
+                break;
+            }
         }
 
-        if (fastPointer == nullptr || fastPointer->next == nullptr) 
+        if (!cycleFound) 
             return nullptr;
 
         int loopLength = 0;
