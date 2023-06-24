@@ -26,23 +26,12 @@ public:
         if (!cycleFound) 
             return nullptr;
 
-        int loopLength = 0;
-        do {
+        fastPointer = head;
+        while (slowPointer != fastPointer) {
             slowPointer = slowPointer->next;
-            loopLength++;
-        } while (slowPointer != fastPointer);
-
-        ListNode *listCrawler = head;
-        ListNode *listCrawlerAhead = head;
-
-        for (int k = 0; k < loopLength; k++)
-            listCrawlerAhead = listCrawlerAhead->next;
-
-        while (listCrawlerAhead != listCrawler) {
-            listCrawler = listCrawler->next;
-            listCrawlerAhead = listCrawlerAhead->next;
+            fastPointer = fastPointer->next;
         }
 
-        return listCrawler;
+        return slowPointer;
     }
 };
