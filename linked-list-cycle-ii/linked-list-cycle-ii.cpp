@@ -9,19 +9,18 @@
 class Solution {
 public:
     ListNode *detectCycle(ListNode *head) {
-        if(head == nullptr)
-            return nullptr;
-
         ListNode *slowPointer = head;
-        ListNode *fastPointer = head->next;
+        ListNode *fastPointer = head;
 
-        while (fastPointer != slowPointer) {
-            if (fastPointer == nullptr || fastPointer->next == nullptr)
-                return nullptr;
-            
+        while (fastPointer != nullptr && fastPointer->next != nullptr) {          
             slowPointer = slowPointer->next;
             fastPointer = fastPointer->next->next;
+
+            if (slowPointer == fastPointer) break;
         }
+
+        if (fastPointer == nullptr || fastPointer->next == nullptr) 
+            return nullptr;
 
         int loopLength = 0;
         do {
