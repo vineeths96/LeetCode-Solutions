@@ -9,20 +9,16 @@
 class Solution {
 public:
     bool hasCycle(ListNode *head) {
-        if (head == nullptr)
-            return false;
+        ListNode *slowPointer = head;
+        ListNode *fastPointer = head;
 
-        ListNode *slowCrawler = head;
-        ListNode *fastCrawler = head->next;
+        while (fastPointer != nullptr && fastPointer->next != nullptr) {
+            slowPointer = slowPointer->next;
+            fastPointer = fastPointer->next->next;
 
-        while (fastCrawler != slowCrawler) {
-            if (fastCrawler == nullptr || fastCrawler->next == nullptr)
-                return false;
-
-            slowCrawler = slowCrawler->next;
-            fastCrawler = fastCrawler->next->next;
+            if (slowPointer == fastPointer) return true;
         }
 
-        return true;
+        return false;
     }
 };
