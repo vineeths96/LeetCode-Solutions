@@ -32,7 +32,7 @@ public:
         }
 
         current = head;
-        while (current != nullptr && previous != nullptr && current != slowPointer) {
+        while (previous != nullptr) {
             if (current->val != previous->val)
                 return false;
 
