@@ -19,9 +19,6 @@ public:
             fastPointer = fastPointer->next->next;
         }
 
-        if (fastPointer != nullptr)
-            slowPointer = slowPointer->next;
-
         ListNode *current = slowPointer;
         ListNode *previous = nullptr;
         while (current != nullptr) {
