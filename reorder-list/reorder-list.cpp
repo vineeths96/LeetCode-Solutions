@@ -29,12 +29,11 @@ public:
         }
 
         current = head;
-        while (current != nullptr && previous != nullptr) {
+        while (previous->next != nullptr) {
             ListNode *currentNext = current->next;
             current->next = previous;
             ListNode *previousNext = previous->next;
-            if (currentNext != previous) 
-                previous->next = currentNext;
+            previous->next = currentNext;
 
             current = currentNext;
             previous = previousNext;
