@@ -1,42 +1,42 @@
 class Solution {
+    int getNextIndex(std::vector<int> nums, int index, bool isForward) {
+        if (index < 0 || nums[index] > 0 != isForward)
+            return -1;
+
+        return (nums.size() + index + nums[index]) % nums.size();
+}
+
 public:
     bool circularArrayLoop(vector<int>& nums) {
+        std::vector<bool> visited(nums.size(), false);
+
         for (int i = 0; i < nums.size(); i++) {
-            int slowPointer = i;
-            int fastPointer = i;
-
-            bool isForward = nums[i] > 0;
-            bool isWrongDirection = false;
-            do {
-                if (nums[slowPointer] > 0 != isForward) {
-                    isWrongDirection = true;
-                    break;
-                }
-                slowPointer = (nums.size() + slowPointer + nums[slowPointer]) % nums.size();
-
-                if (nums[fastPointer] > 0 != isForward) {
-                    isWrongDirection = true;
-                    break;
-                } 
-                fastPointer = (nums.size() + fastPointer + nums[fastPointer]) % nums.size();
-
-                if (nums[fastPointer] > 0 != isForward) {
-                    isWrongDirection = true;
-                    break;
-                } 
-                fastPointer = (nums.size() + fastPointer + nums[fastPointer]) % nums.size();
-            } while (slowPointer != fastPointer);
-         
-            if (isWrongDirection)
+            if (visited[i])
                 continue;
 
-            int loopLength = 0;
+            int slowPointer = i;
+            int fastPointer = i;
+            visited[i] = true;
+
+            bool isForward = nums[i] > 0;
             do {
-                slowPointer = (nums.size() + slowPointer + nums[slowPointer]) % nums.size();
-                loopLength++;
+                slowPointer = getNextIndex(nums, slowPointer, isForward);
+                fastPointer = getNextIndex(nums, fastPointer, isForward);
+                fastPointer = getNextIndex(nums, fastPointer, isForward);
+
+                if (slowPointer == -1 || fastPointer == -1)
+                    break;
+                
+                if (visited[slowPointer] || visited[fastPointer])
+                    continue;
+                else
+                    visited[slowPointer] = visited[fastPointer] = true;
             } while (slowPointer != fastPointer);
 
-            if (loopLength > 1)
+            if (slowPointer == -1 || fastPointer == -1)
+                continue;
+
+            if (slowPointer != getNextIndex(nums, slowPointer, isForward))
                 return true;
         }
 
