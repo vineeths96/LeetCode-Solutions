@@ -8,19 +8,12 @@ public:
             distinctChars[s[windowEnd]]++;
 
             while (windowStart <= windowEnd && distinctChars.size() > k) {
-                char charToErase = s[windowStart];
+                distinctChars[s[windowStart]]--;
 
-                while (distinctChars[charToErase] > 0) {
-                    distinctChars[s[windowStart]]--;
+                if (distinctChars[s[windowStart]] == 0)
+                    distinctChars.erase(s[windowStart]);
 
-                    if (distinctChars[s[windowStart]] == 0)
-                        distinctChars.erase(s[windowStart]);
-
-                    windowStart++;
-
-                    if (distinctChars.size() <= k)
-                        break;
-                }
+                windowStart++;
             }
 
             subStringLength = std::max(subStringLength, windowEnd - windowStart + 1);
