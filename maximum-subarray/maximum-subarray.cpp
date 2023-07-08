@@ -5,10 +5,7 @@ public:
         int currentSum = 0;
 
         for (int i = 0; i < nums.size(); i++) {
-            if (currentSum < 0)
-                currentSum = 0;
-
-            currentSum += nums[i];
+            currentSum = std::max(nums[i], currentSum + nums[i]);
             maxSum = std::max(maxSum, currentSum);            
         }
 
