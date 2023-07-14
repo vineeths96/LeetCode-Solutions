@@ -2,21 +2,19 @@ class Solution {
 public:
     int lengthOfLongestSubstringKDistinct(string s, int k) {
         std::unordered_map<char, int> distinctChars;
-        int subStringLength = std::numeric_limits<int>::min();
+        int subStringLength = 0;
 
-        for (int windowStart = 0, windowEnd = 0; windowEnd < s.size(); windowEnd++) {
-            distinctChars[s[windowEnd]]++;
+        for (int i = 0; i < s.size(); i++) {
+            distinctChars[s[i]]++;
 
-            while (windowStart <= windowEnd && distinctChars.size() > k) {
-                distinctChars[s[windowStart]]--;
+            if (distinctChars.size() <= k)
+                subStringLength++;
+            else {
+                distinctChars[s[i - subStringLength]]--;
 
-                if (distinctChars[s[windowStart]] == 0)
-                    distinctChars.erase(s[windowStart]);
-
-                windowStart++;
+                if (distinctChars[s[i - subStringLength]] == 0)
+                    distinctChars.erase(s[i - subStringLength]);
             }
-
-            subStringLength = std::max(subStringLength, windowEnd - windowStart + 1);
         }
 
         return subStringLength;
