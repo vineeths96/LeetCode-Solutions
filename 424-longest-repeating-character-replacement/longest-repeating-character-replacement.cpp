@@ -1,23 +1,20 @@
 class Solution {
 private:
-    bool substringOfSizeExists(std::string str, int size, int k) {
-        int max_frequency = std::numeric_limits<int>::min();
+    bool subStringWithSameLetter(std::string str, int windowSize, int k) {
+        int maxFrequency = std::numeric_limits<int>::min();
         std::unordered_map<char, int> charFreqMap;
 
-        int windowStart = 0;
         for (int windowEnd = 0; windowEnd < str.size(); windowEnd++) {
             charFreqMap[str[windowEnd]]++;
 
-            if (windowEnd - windowStart + 1 > size) {
-                charFreqMap[str[windowStart]]--;
-                windowStart++;
-            }
+            if (windowEnd >= windowSize)
+                charFreqMap[str[windowEnd - windowSize]]--;
 
-            max_frequency = std::max(max_frequency, charFreqMap[str[windowEnd]]);
+            maxFrequency = std::max(maxFrequency, charFreqMap[str[windowEnd]]);
 
-            if (size - max_frequency <= k)
+            if (windowSize - maxFrequency <= k)
                 return true;
-        }
+        } 
 
         return false;
     }
@@ -30,7 +27,7 @@ public:
         while (left < right) {
             int mid = left + (right - left) / 2;
 
-            if (substringOfSizeExists(s, mid, k))
+            if (subStringWithSameLetter(s, mid, k)) 
                 left = mid + 1;
             else
                 right = mid;
