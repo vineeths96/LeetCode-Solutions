@@ -7,7 +7,7 @@ public:
         for (int windowStart = 0, windowEnd = 0; windowEnd < nums.size(); windowEnd++) {
             oneCount += nums[windowEnd];
 
-            if (windowEnd - windowStart + 1 - oneCount > k) {
+            while (windowEnd - windowStart + 1 - oneCount > k) {
                 oneCount -= nums[windowStart];
                 windowStart++;
             }
