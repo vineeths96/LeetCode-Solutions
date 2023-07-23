@@ -5,10 +5,20 @@ public:
         for (const char &ch : s1)
             charFreqMap[ch]++;
 
-        for (int windowStart = 0, windowEnd = 0; windowEnd < s2.size();) {
+        int windowStart = 0;
+        int windowEnd = 0;
+
+        while (windowEnd < s2.size()) {
             char currentChar = s2[windowEnd];
  
-            if (charFreqMap.find(currentChar) != charFreqMap.end()) {
+            if (charFreqMap.find(currentChar) == charFreqMap.end()) {
+                if (windowStart < windowEnd) 
+                    charFreqMap[s2[windowStart]]++;
+                else
+                    windowEnd++;
+                
+                windowStart++;
+            } else {
                 charFreqMap[currentChar]--;
 
                 if (charFreqMap[currentChar] == 0)
@@ -17,12 +27,6 @@ public:
                 if (charFreqMap.size() == 0)
                     return true;
 
-                windowEnd++;
-            } else if (windowStart < windowEnd) {
-                charFreqMap[s2[windowStart]]++;
-                windowStart++;
-            } else {
-                windowStart++;
                 windowEnd++;
             }
         }
