@@ -1,33 +1,31 @@
 class Solution {
 public:
     bool checkInclusion(string s1, string s2) {
-        std::unordered_map<char, int> charFreqMap;
+        std::unordered_map<char, int> charFreqTracker;
         for (const char &ch : s1)
-            charFreqMap[ch]++;
+            charFreqTracker[ch]++;
 
         int windowStart = 0;
         int windowEnd = 0;
-
         while (windowEnd < s2.size()) {
             char currentChar = s2[windowEnd];
- 
-            if (charFreqMap.find(currentChar) == charFreqMap.end()) {
-                if (windowStart < windowEnd) 
-                    charFreqMap[s2[windowStart]]++;
-                else
-                    windowEnd++;
+            if (charFreqTracker.find(currentChar) != charFreqTracker.end()) {
+                charFreqTracker[currentChar]--;
                 
-                windowStart++;
-            } else {
-                charFreqMap[currentChar]--;
+                if (charFreqTracker[currentChar] == 0)
+                    charFreqTracker.erase(currentChar);
 
-                if (charFreqMap[currentChar] == 0)
-                    charFreqMap.erase(currentChar);
-
-                if (charFreqMap.size() == 0)
+                if (charFreqTracker.size() == 0)
                     return true;
-
+                
                 windowEnd++;
+            } else {
+                if (windowStart == windowEnd)
+                    windowEnd++;
+                else
+                    charFreqTracker[s2[windowStart]]++;
+
+                windowStart++;
             }
         }
 
