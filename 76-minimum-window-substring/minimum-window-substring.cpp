@@ -18,20 +18,19 @@ public:
 
             if (matched == charFreqMap.size()) {
                 while (windowStart <= windowEnd) {
-                    if (matched == charFreqMap.size()) {
-                        if (windowEnd - windowStart + 1 < minWindow[0]) {
-                            minWindow[0] = windowEnd - windowStart + 1;
-                            minWindow[1] = windowStart;
-                            minWindow[2] = windowEnd;
-                        }
-                    } else
-                        break;
+                    if (matched == charFreqMap.size() && windowEnd - windowStart + 1 < minWindow[0]) {
+                        minWindow[0] = windowEnd - windowStart + 1;
+                        minWindow[1] = windowStart;
+                        minWindow[2] = windowEnd;
+                    }
 
                     char windowStartChar = s[windowStart];
                     windowCharFreqMap[windowStartChar]--;
                     windowStart++;
-                    if (charFreqMap.count(windowStartChar) != 0 && windowCharFreqMap[windowStartChar] < charFreqMap[windowStartChar])
+                    if (charFreqMap.count(windowStartChar) != 0 && windowCharFreqMap[windowStartChar] < charFreqMap[windowStartChar]) {
                         matched--;
+                        break;
+                    }
                 }
             }
 
