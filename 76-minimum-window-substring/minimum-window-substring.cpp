@@ -15,7 +15,7 @@ public:
             if (charFreqMap.count(windowEndChar) != 0 && windowCharFreqMap[windowEndChar] == charFreqMap[windowEndChar])
                 matched++;
 
-            while (matched == charFreqMap.size()) {
+            while (windowStart <= windowEnd && matched == charFreqMap.size()) {
                 if (windowEnd - windowStart + 1 < minWindow[0]) {
                     minWindow[0] = windowEnd - windowStart + 1;
                     minWindow[1] = windowStart;
