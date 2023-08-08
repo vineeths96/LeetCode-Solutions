@@ -11,10 +11,8 @@ public:
             std::vector<int> &currentInterval = intervals[ind];
             if (mergedIntervals.empty() || currentInterval[0] >  mergedIntervals.back()[1])
                 mergedIntervals.push_back(currentInterval);
-            else {
-                if (currentInterval[1] >  mergedIntervals.back()[1])
-                     mergedIntervals.back()[1] = currentInterval[1];
-            }
+            else
+                mergedIntervals.back()[1] = std::max(mergedIntervals.back()[1], currentInterval[1]);
         }
 
         return mergedIntervals;
