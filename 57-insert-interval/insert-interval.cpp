@@ -2,11 +2,8 @@ class Solution {
     void insertInterval(std::vector<std::vector<int>> &insertedIntervals, std::vector<int> &newInterval) {
         if (insertedIntervals.empty() || newInterval[0] > insertedIntervals.back()[1])
             insertedIntervals.push_back(newInterval);
-        else {
-            auto &lastInterval = insertedIntervals.back();
-            if (newInterval[1] > lastInterval[1])
-                lastInterval[1] = newInterval[1];
-        }
+        else
+            insertedIntervals.back()[1] = std::max(insertedIntervals.back()[1], newInterval[1]);
     }
 
 public:
