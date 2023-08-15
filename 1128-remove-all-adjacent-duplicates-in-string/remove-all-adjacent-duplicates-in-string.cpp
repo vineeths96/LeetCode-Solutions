@@ -4,13 +4,9 @@ public:
         std::stack<char> charStack;
 
         for (const char &ch : s) {
-            bool popped = false;
-            while (!charStack.empty() && ch == charStack.top()) {
+            if (!charStack.empty() && ch == charStack.top())
                 charStack.pop();
-                popped = true;
-            }
-
-            if (!popped)
+            else
                 charStack.push(ch);
         }
 
