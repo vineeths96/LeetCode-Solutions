@@ -1,23 +1,15 @@
 class Solution {
 public:
     string removeDuplicates(string s) {
-        std::stack<char> charStack;
+        std::string charStack;
 
         for (const char &ch : s) {
-            if (!charStack.empty() && ch == charStack.top())
-                charStack.pop();
+            if (!charStack.empty() && ch == charStack.back())
+                charStack.pop_back();
             else
-                charStack.push(ch);
+                charStack.push_back(ch);
         }
 
-        std::string unique(charStack.size(), '0');
-        int index = charStack.size() - 1;
-        while (!charStack.empty()) {
-            unique[index] = charStack.top();
-            charStack.pop();
-            index--;
-        }
-
-        return unique;
+        return charStack;
     }
 };
