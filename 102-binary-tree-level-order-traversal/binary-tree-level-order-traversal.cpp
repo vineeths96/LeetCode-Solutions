@@ -15,24 +15,25 @@ public:
         if (root == nullptr)
             return {};
 
-        std::queue<std::pair<int, TreeNode*>> bfsQueue;
-        bfsQueue.push(std::make_pair(0, root));
+        std::queue<TreeNode*> bfsQueue;
+        bfsQueue.push(root);
 
+        int level = 0;
         std::vector<std::vector<int>> levelOrderTraversal;
         while (!bfsQueue.empty()) {
-            auto front = bfsQueue.front();
-            bfsQueue.pop();
+            int numNodesInLevel = bfsQueue.size();
+            levelOrderTraversal.push_back({});
 
-            int level = front.first;
-            TreeNode* node = front.second;
+            for (int i = 0; i < numNodesInLevel; i++) {
+                TreeNode *node = bfsQueue.front();
+                bfsQueue.pop();
 
-            if (levelOrderTraversal.size() == level)
-                levelOrderTraversal.push_back({});
+                levelOrderTraversal[level].push_back(node->val);
+                if (node->left != nullptr) bfsQueue.push(node->left);
+                if (node->right != nullptr) bfsQueue.push(node->right);
+            }
 
-            levelOrderTraversal[level].push_back(node->val);
-
-            if (node->left) bfsQueue.push(std::make_pair(level + 1, node->left));
-            if (node->right) bfsQueue.push(std::make_pair(level + 1, node->right));
+            level++;            
         }
 
         return levelOrderTraversal;
