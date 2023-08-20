@@ -15,29 +15,31 @@ public:
         if (root == nullptr)
             return {};
 
-        std::queue<std::pair<int, TreeNode*>> bfsQueue;
-        bfsQueue.push({0, root});
+        std::queue<TreeNode*> bfsQueue;
+        bfsQueue.push(root);
 
+        bool leftToRight = true;
         std::vector<std::vector<int>> zigzagLevelOrderTraversal;
         while (!bfsQueue.empty()) {
-            auto front = bfsQueue.front();
-            bfsQueue.pop();
-            
-            int level = front.first;
-            TreeNode *node = front.second;
+            int numNodesInLevel = bfsQueue.size();
+            std::vector<int> levelNodes(numNodesInLevel, 0);
 
-            if (zigzagLevelOrderTraversal.size() == level)
-                zigzagLevelOrderTraversal.push_back({});
+            for (int i = 0; i < numNodesInLevel; i++) {
+                TreeNode *node = bfsQueue.front();
+                bfsQueue.pop();
+                
+                if (leftToRight)
+                    levelNodes[i] = node->val;
+                else
+                    levelNodes[numNodesInLevel-1-i] = node->val;
 
-            zigzagLevelOrderTraversal[level].push_back(node->val);
+                if (node->left != nullptr) bfsQueue.push(node->left);
+                if (node->right != nullptr) bfsQueue.push(node->right);
+            }
 
-            if (node->left != nullptr) bfsQueue.push({level + 1, node->left});
-            if (node->right != nullptr) bfsQueue.push({level + 1, node->right});
+            zigzagLevelOrderTraversal.push_back(levelNodes);
+            leftToRight = !leftToRight;
         }
-
-        for (int i = 0; i < zigzagLevelOrderTraversal.size(); i++)
-            if (i % 2 == 1)
-                std::reverse(zigzagLevelOrderTraversal[i].begin(), zigzagLevelOrderTraversal[i].end());
 
         return zigzagLevelOrderTraversal;
     }
