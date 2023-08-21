@@ -19,7 +19,7 @@ public:
         bfsQueue.push(root);
 
         std::vector<double> levelAverages;
-        while(!bfsQueue.empty()) {
+        while (!bfsQueue.empty()) {
             int numNodesInLevel = bfsQueue.size();
             double levelSum = 0;
 
