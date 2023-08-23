@@ -22,27 +22,19 @@ public:
         if (root == nullptr)
             return root;
 
-        std::queue<Node*> bfsQueue;
-        bfsQueue.push(root);
+        Node *levelStart = root;
+        while (levelStart->left != nullptr) {
+            Node *head = levelStart;
+            while (head != nullptr) {
+                head->left->next = head->right;
 
-        while (!bfsQueue.empty()) {
-            int numNodesInLevel = bfsQueue.size();
-            Node *previous = nullptr;
-            Node *current = nullptr;
-            for (int i = 0; i < numNodesInLevel; i++) {
-                current = bfsQueue.front();
-                bfsQueue.pop();
+                if (head->next != nullptr)
+                    head->right->next = head->next->left;
 
-                if (previous != nullptr)
-                    previous->next = current;
-                
-                previous = current;
-
-                if (current->left != nullptr) bfsQueue.push(current->left);
-                if (current->right != nullptr) bfsQueue.push(current->right);                
+                head = head->next;
             }
 
-            current->next = nullptr;
+            levelStart = levelStart->left;
         }
 
         return root;
