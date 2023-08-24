@@ -10,25 +10,29 @@
  * };
  */
 class Solution {
-    void dfsHelper(TreeNode* root, int currentSum, std::vector<int> currentPath, std::vector<std::vector<int>> &paths) {
+    std::vector<std::vector<int>> paths;
+
+    void dfsHelper(TreeNode* root, int currentSum, std::vector<int> &currentPath) {
         if (root == nullptr)
             return;
         
         currentSum -= root->val;
         currentPath.push_back(root->val);
         if (currentSum == 0 && root->left == nullptr && root->right == nullptr) {
-            paths.push_back(currentPath);
+            this->paths.push_back(currentPath);
+            currentPath.pop_back();
             return;
         }
 
-        if (root->left != nullptr) dfsHelper(root->left, currentSum, currentPath, paths);
-        if (root->right != nullptr) dfsHelper(root->right, currentSum, currentPath, paths);
+        if (root->left != nullptr)dfsHelper(root->left, currentSum, currentPath);
+        if (root->right != nullptr) dfsHelper(root->right, currentSum, currentPath);
+        currentPath.pop_back();
     }
 
 public:
     vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
-        std::vector<std::vector<int>> paths;
-        dfsHelper(root, targetSum, {}, paths);
-        return paths;
+        std::vector<int> currentPath;
+        dfsHelper(root, targetSum, currentPath);
+        return this->paths;
     }
 };
