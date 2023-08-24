@@ -10,29 +10,24 @@
  * };
  */
 class Solution {
-    std::vector<std::string> paths;
+    int pathSums = 0;
 
-    void dfsHelper(TreeNode* root, std::string currentPath) {
+    void dfsHelper(TreeNode *root, int currentSum) {
         if (root == nullptr)
             return;
-        
-        currentPath += std::to_string(root->val);
+
+        currentSum = currentSum * 10 + root->val;
         if (root->left == nullptr && root->right == nullptr)
-            this->paths.push_back(currentPath);
+            pathSums += currentSum;
         else {
-            if (root->left != nullptr) dfsHelper(root->left, currentPath);
-            if (root->right != nullptr) dfsHelper(root->right, currentPath);
+            if (root->left != nullptr) dfsHelper(root->left, currentSum);
+            if (root->right != nullptr) dfsHelper(root->right, currentSum);
         }
     }
 
 public:
     int sumNumbers(TreeNode* root) {
-        dfsHelper(root, "");
-
-        int sumOfAllPaths = 0;
-        for (const std::string path : paths)
-            sumOfAllPaths += std::stoi(path);
-
-        return sumOfAllPaths;
+        dfsHelper(root, 0);
+        return pathSums;        
     }
 };
