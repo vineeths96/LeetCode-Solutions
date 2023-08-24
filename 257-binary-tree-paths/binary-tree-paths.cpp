@@ -10,37 +10,27 @@
  * };
  */
 class Solution {
-    std::vector<std::vector<int>> paths;
+    std::vector<std::string> paths;
 
-    void dfsHelper(TreeNode* root, std::vector<int> &currentPath) {
+    void dfsHelper(TreeNode* root, std::string currentPath) {
         if (root == nullptr)
             return;
         
-        currentPath.push_back(root->val);
+        currentPath += std::to_string(root->val);
         if (root->left == nullptr && root->right == nullptr)
             this->paths.push_back(currentPath);
         else {
+            currentPath += "->";
             if (root->left != nullptr) dfsHelper(root->left, currentPath);
             if (root->right != nullptr) dfsHelper(root->right, currentPath);
         }
-        currentPath.pop_back();
     }
 
 public:
     vector<string> binaryTreePaths(TreeNode* root) {
-        std::vector<int> currentPath;
+        std::string currentPath;
         dfsHelper(root, currentPath);
 
-        std::vector<std::string> stringPaths;
-        for (const auto &path : paths) {
-            std::string stringPath;
-            for (const int node : path)
-                stringPath += std::to_string(node) + "->";
-
-            stringPath.erase(stringPath.size() - 2);
-            stringPaths.push_back(stringPath);
-        }
-
-        return stringPaths;
+        return paths;
     }
 };
