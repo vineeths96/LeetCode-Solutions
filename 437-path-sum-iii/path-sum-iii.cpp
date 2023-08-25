@@ -10,31 +10,29 @@
  * };
  */
 class Solution {
-    int dfsHelper(TreeNode *root, int targetSum, std::vector<long long> pathSums) {
+public:
+    std::unordered_map<long long, int> prefixSum;
+
+    int dfsHelper(TreeNode *root, int targetSum, long long currentSum) {
         int numPaths = 0;
         if (root == nullptr)
             return numPaths;
         
-        for (long long &num : pathSums)
-            num += root->val;
+        currentSum += root->val;
+        if (currentSum == targetSum) numPaths++;
 
-        pathSums.push_back(root->val);
+        if (prefixSum.find(currentSum - targetSum) != prefixSum.end())
+            numPaths += prefixSum[currentSum - targetSum];
+            
+        prefixSum[currentSum]++;
+        if (root->left != nullptr) numPaths += dfsHelper(root->left, targetSum, currentSum);
+        if (root->right != nullptr) numPaths += dfsHelper(root->right, targetSum, currentSum);
+        prefixSum[currentSum]--;
 
-        for (long long num : pathSums)
-            if (num == targetSum) 
-                numPaths++;
-
-        if (root->left != nullptr)
-            numPaths += dfsHelper(root->left, targetSum, pathSums);
-        if (root->right != nullptr)
-            numPaths += dfsHelper(root->right, targetSum, pathSums);
-
-        return numPaths;
+        return numPaths;        
     }
 
-public:
     int pathSum(TreeNode* root, int targetSum) {
-        std::vector<long long> pathSums;
-        return dfsHelper(root, targetSum, pathSums);
+        return dfsHelper(root, targetSum, 0);
     }
 };
