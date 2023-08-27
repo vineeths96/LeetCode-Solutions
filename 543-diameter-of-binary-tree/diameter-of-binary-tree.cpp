@@ -20,9 +20,7 @@ class Solution {
         int rightTreeHeight = dfsHelper(root->right);
 
         this->treeDiameter = std::max(this->treeDiameter, leftTreeHeight + rightTreeHeight);
-
         return 1 + std::max(leftTreeHeight, rightTreeHeight);
-
     }
 
 public:
