@@ -19,8 +19,6 @@ public:
             return numPaths;
         
         currentSum += root->val;
-        if (currentSum == targetSum) numPaths++;
-
         if (prefixSum.find(currentSum - targetSum) != prefixSum.end())
             numPaths += prefixSum[currentSum - targetSum];
             
@@ -33,6 +31,7 @@ public:
     }
 
     int pathSum(TreeNode* root, int targetSum) {
+        prefixSum.insert({0, 1});
         return dfsHelper(root, targetSum, 0);
     }
 };
