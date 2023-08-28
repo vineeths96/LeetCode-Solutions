@@ -4,12 +4,10 @@ public:
         int numArrays = 0;
         int currentPrefixSum = 0;
         std::unordered_map<int, int> prefixSum;
+        prefixSum.insert({0, 1});
 
         for (const int &num : nums) {
             currentPrefixSum += num;
-
-            if (currentPrefixSum == k) 
-                numArrays++;
 
             if (prefixSum.find(currentPrefixSum - k) != prefixSum.end())
                 numArrays += prefixSum[currentPrefixSum - k];
