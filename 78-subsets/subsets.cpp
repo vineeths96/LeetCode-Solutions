@@ -1,22 +1,15 @@
 class Solution {
-    std::vector<std::vector<int>> subsetsSet;
-
-    void recursionHelper(const std::vector<int> &nums, int currentIndex, std::vector<int> &currentVector) {
-        if (currentIndex == nums.size()) {
-            subsetsSet.push_back(currentVector);
-            return;
-        }
-
-        currentVector.push_back(nums[currentIndex]);
-        recursionHelper(nums, currentIndex + 1, currentVector);
-        currentVector.pop_back();
-        recursionHelper(nums, currentIndex + 1, currentVector);
-    }
-
 public:
     vector<vector<int>> subsets(vector<int>& nums) {
-        std::vector<int> currentVector;
-        recursionHelper(nums, 0, currentVector);
-        return subsetsSet;
+        std::vector<std::vector<int>> powerSet;
+        for (int i = 0; i < std::pow(2, nums.size()); i++) {
+            std::vector<int> currentVector;
+            for (int j = 0, mask = i; j < nums.size(); j++, mask = mask >> 1)
+                if (mask & 1) currentVector.push_back(nums[j]);
+            
+            powerSet.push_back(currentVector);
+        }
+
+        return powerSet;
     }
 };
