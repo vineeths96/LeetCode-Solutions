@@ -1,7 +1,7 @@
 class Solution {
     std::vector<std::string> permutations;
 
-    void recursionHelper(std::string str, int currentIndex) {
+    void recursionHelper(std::string &str, int currentIndex) {
         while (std::isdigit(str[currentIndex])) currentIndex++;
 
         if (currentIndex == str.size()) {
