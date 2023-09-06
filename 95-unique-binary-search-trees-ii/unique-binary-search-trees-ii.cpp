@@ -10,9 +10,14 @@
  * };
  */
 class Solution {
+    std::map<std::pair<int, int>, std::vector<TreeNode*>> dpMap;
+
     std::vector<TreeNode*> generateTreesHelper(int start, int end) {
         if (start > end)
             return {nullptr};
+
+        if (dpMap.find({start, end}) != dpMap.end())
+            return dpMap[{start, end}];
         
         std::vector<TreeNode*> roots;
         for (int i = start; i <= end; i++) {
@@ -27,7 +32,7 @@ class Solution {
             }
         }
 
-        return roots;
+        return dpMap[{start, end}] = roots;
     }
 
 public:
