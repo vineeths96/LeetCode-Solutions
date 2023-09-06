@@ -13,11 +13,6 @@ class Solution {
     std::vector<TreeNode*> generateTreesHelper(int start, int end) {
         if (start > end)
             return {nullptr};
-
-        if (start == end) {
-            TreeNode *root = new TreeNode(start);
-            return {root};
-        }
         
         std::vector<TreeNode*> roots;
         for (int i = start; i <= end; i++) {
