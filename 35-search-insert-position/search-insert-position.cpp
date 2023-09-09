@@ -4,6 +4,9 @@ public:
         int left = 0;
         int right = nums.size() - 1;
 
+        if (nums[right] < target)
+            return right + 1;
+
         while (left < right) {
             int mid = left + (right - left) / 2;
             if (nums[mid] >= target)
@@ -12,6 +15,6 @@ public:
                 left = mid + 1;
         }
 
-        return nums[left] < target? left + 1 : left;
+        return left;
     }
 };
