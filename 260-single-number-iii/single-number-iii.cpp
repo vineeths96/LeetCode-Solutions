@@ -1,20 +1,16 @@
 class Solution {
 public:
     vector<int> singleNumber(vector<int>& nums) {
-        int xorOfNums = 0;
-
+        long int xorOfNums = 0;
         for (const int &num : nums)
             xorOfNums ^= num;
 
-        int rightSetBit = 0;
-        while ((xorOfNums & 1 << rightSetBit) == 0)
-            rightSetBit++;
-
-        int firstNumber = xorOfNums;
-        int secondNumber = xorOfNums;
+        long int bitmask = xorOfNums & (-xorOfNums);
+        int firstNumber = 0;
+        int secondNumber = 0;
 
         for (const int &num : nums) {
-            if (num & 1 << rightSetBit)
+            if (num & bitmask)
                 firstNumber ^= num;
             else
                 secondNumber ^= num;
