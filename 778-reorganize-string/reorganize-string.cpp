@@ -15,25 +15,19 @@ public:
             maxHeap.push(kvPair);
 
         std::string reorgedString;
+        reorgedString.reserve(s.size());
         if (maxHeap.top().second > (s.size() + 1) / 2) 
             return reorgedString;
 
-        reorgedString.reserve(s.size());
+        std::pair<char, int> previousPair({' ', -1});
         while (!maxHeap.empty()) {
-            auto firstKvPair = maxHeap.top();
+            auto kvPair = maxHeap.top();
             maxHeap.pop();            
-            reorgedString += firstKvPair.first;
-            firstKvPair.second--;
-            
-            if (!maxHeap.empty()) {
-                auto secondKvPair = maxHeap.top();
-                maxHeap.pop();
-                reorgedString += secondKvPair.first;
-                secondKvPair.second--;
+            reorgedString += kvPair.first;
+            kvPair.second--;
 
-                if (firstKvPair.second > 0) maxHeap.push(firstKvPair);
-                if (secondKvPair.second > 0) maxHeap.push(secondKvPair);
-            }
+            if (previousPair.second > 0) maxHeap.push(previousPair);
+            previousPair = kvPair;
         }
 
         return reorgedString;
