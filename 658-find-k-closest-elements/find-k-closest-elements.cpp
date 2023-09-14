@@ -1,30 +1,21 @@
 class Solution {
 public:
     vector<int> findClosestElements(vector<int>& arr, int k, int x) {
-        std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::less<std::pair<int, int>>> maxHeap;
+        std::deque<int> closestElements;
+        
+        int lowerBound = std::lower_bound(arr.begin(), arr.end(), x) - arr.begin();
+        int lowerIndex = lowerBound - 1;
+        int higherIndex = lowerBound;
 
-        for (const int &num : arr) {
-            int distance = std::abs(num - x);
-            
-            if (maxHeap.size() < k) 
-                maxHeap.push({distance, num});
-            else {
-                if (distance < maxHeap.top().first) {
-                    maxHeap.pop();
-                    maxHeap.push({distance, num});
-                }
-            }
+        while (k) {
+            if (lowerIndex >= 0 && (higherIndex >= arr.size() || std::abs(arr[lowerIndex] - x) <= std::abs(arr[higherIndex] - x)))
+                closestElements.push_front(arr[lowerIndex--]);
+            else
+                closestElements.push_back(arr[higherIndex++]);
+
+            k--;
         }
 
-        std::vector<int> closestElements;
-        while (!maxHeap.empty()) {
-            auto kvPair = maxHeap.top();
-            maxHeap.pop();
-            closestElements.push_back(kvPair.second);
-        }
-
-        std::sort(closestElements.begin(), closestElements.end());
-
-        return closestElements;
+        return std::vector<int>(closestElements.begin(), closestElements.end());
     }
 };
