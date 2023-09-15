@@ -1,10 +1,10 @@
 class Solution {
-    static int distance(std::vector<int> point) {
+    static int distance(const std::vector<int> &point) {
         return point[0] * point[0] + point[1] * point[1];
     }
 
     struct Compare {
-        bool operator()(std::vector<int> X, std::vector<int> Y) {
+        bool operator()(const std::vector<int> &X, const std::vector<int> &Y) {
             return distance(X) < distance(Y);
         }
     };
