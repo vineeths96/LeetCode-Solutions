@@ -32,11 +32,13 @@ public:
                     maxHeap.push(front);
             }
 
-            while (maxHeap.empty() && !previousEntries.empty() && previousEntries.front().second <= 0)
-                previousEntries.pop();
+            if (maxHeap.empty() && !previousEntries.empty()) {
+                while (!previousEntries.empty() && previousEntries.front().second <= 0) 
+                    previousEntries.pop();
 
-            if (maxHeap.empty() && !previousEntries.empty() && previousEntries.front().second > 0)
-                maxHeap.push({' ', 0});
+                if (!previousEntries.empty() && previousEntries.front().second > 0)
+                    maxHeap.push({' ', 0});
+            }
         }
 
         return timeUnits;
