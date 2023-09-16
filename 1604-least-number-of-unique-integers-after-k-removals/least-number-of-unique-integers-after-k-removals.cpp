@@ -1,6 +1,6 @@
 class Solution {
     struct Compare {
-        bool operator()(std::pair<int, int> X, std::pair<int, int> Y) {
+        bool operator()(const std::pair<int, int> &X, const std::pair<int, int> &Y) {
             return X.second > Y.second;
         }
     };
