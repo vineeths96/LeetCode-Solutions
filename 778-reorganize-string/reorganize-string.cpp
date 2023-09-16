@@ -1,33 +1,36 @@
 class Solution {
-    struct Compare {
-        bool operator()(std::pair<char, int> X, std::pair<char, int> Y) {
-            return X.second < Y.second;
-        }
-    };
 public:
     string reorganizeString(string s) {
+        char maxFrequencyLetter;
+        int maxFrequency = std::numeric_limits<int>::min();
         std::unordered_map<char, int> charFreqMap;
-        for (const char &ch : s)
+        for (const char &ch : s) {
             charFreqMap[ch]++;
 
-        std::priority_queue<std::pair<char, int>, std::vector<std::pair<char, int>>, Compare> maxHeap;
-        for (const auto kvPair : charFreqMap)
-            maxHeap.push(kvPair);
+            if (charFreqMap[ch] > maxFrequency) {
+                maxFrequency = charFreqMap[ch];
+                maxFrequencyLetter = ch;
+            }
+        }
 
-        std::string reorgedString;
-        reorgedString.reserve(s.size());
-        if (maxHeap.top().second > (s.size() + 1) / 2) 
-            return reorgedString;
+        if (maxFrequency > (s.size() + 1) / 2) 
+            return "";
 
-        std::pair<char, int> previousPair({' ', -1});
-        while (!maxHeap.empty()) {
-            auto kvPair = maxHeap.top();
-            maxHeap.pop();            
-            reorgedString += kvPair.first;
-            kvPair.second--;
+        std::string reorgedString(s);
+        int index = 0;
+        while (charFreqMap[maxFrequencyLetter]) {
+            reorgedString[index] = maxFrequencyLetter;
+            index += 2;
+            charFreqMap[maxFrequencyLetter]--;
+        }
 
-            if (previousPair.second > 0) maxHeap.push(previousPair);
-            previousPair = kvPair;
+        for (auto &kvPair : charFreqMap) {
+            while (kvPair.second) {
+                if (index >= s.size()) index = 1;
+                reorgedString[index] = kvPair.first;
+                index += 2;
+                kvPair.second--;
+            }
         }
 
         return reorgedString;
