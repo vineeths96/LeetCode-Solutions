@@ -1,28 +1,30 @@
 class FreqStack {
-    struct Compare {
-        bool operator()(const std::vector<int> &A, const std::vector<int> &B) {
-            return A[1] < B[1] || A[1] == B[1] && A[2] < B[2]; 
-        }
-    };
-
-    int sequenceNumber;
+    int maxFrequency;
     std::unordered_map<int, int> freqMap;
-    std::priority_queue<std::vector<int>, std::vector<std::vector<int>>, Compare> maxHeap;
+    std::unordered_map<int, std::stack<int>> freqStackMap;
 
 public:
     FreqStack() {
-      sequenceNumber = 0;  
+        maxFrequency = 0;
     }
     
     void push(int val) {
-        maxHeap.push({val, ++freqMap[val], sequenceNumber++});
+        freqMap[val]++;
+        freqStackMap[freqMap[val]].push(val);
+        maxFrequency = std::max(maxFrequency, freqMap[val]);
     }
     
     int pop() {
-        int val = maxHeap.top()[0];
-        maxHeap.pop();
-        freqMap[val]--;
-        return val;
+        int top = freqStackMap[maxFrequency].top();
+        freqStackMap[maxFrequency].pop();
+        freqMap[top]--;
+
+        if (freqStackMap[maxFrequency].empty()) {
+            freqStackMap.erase(maxFrequency);
+            maxFrequency--;
+        }
+
+        return top;
     }
 };
 
