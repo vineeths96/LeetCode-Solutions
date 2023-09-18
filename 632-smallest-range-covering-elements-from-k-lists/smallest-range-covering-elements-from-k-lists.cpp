@@ -17,11 +17,11 @@ public:
         }
 
         std::vector<int> range({minHeap.top().first, maxValuePushed});
-        while (!minHeap.empty()) {
+        while (minHeap.size() == nums.size()) {
             auto top = minHeap.top();
             minHeap.pop();
 
-            if (minHeap.size() == nums.size() - 1 && maxValuePushed - top.first < range[1] - range[0])
+            if (maxValuePushed - top.first < range[1] - range[0])
                 range = {top.first, maxValuePushed};
 
             top.second.second++;
