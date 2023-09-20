@@ -9,34 +9,37 @@
  * };
  */
 class Solution {
-    struct Compare {
-        bool operator()(const ListNode *A, const ListNode *B) {
-            return A->val > B->val;
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        ListNode *head = new ListNode(0);
+        ListNode *previous = head;
+
+        while (list1 != nullptr && list2 != nullptr) {
+            if (list1->val < list2->val) {
+                previous->next = list1;
+                list1 = list1->next;
+            } else {
+                previous->next = list2;
+                list2 = list2->next;
+            }
+
+            previous = previous->next;
         }
-    };
+
+        if (list1 == nullptr) previous->next = list2;
+        if (list2 == nullptr) previous->next = list1;
+
+        return head->next;
+    }
 
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        std::priority_queue<ListNode*, std::vector<ListNode*>, Compare> minHeap;
-        for (ListNode *head : lists) 
-            if (head != nullptr)
-                minHeap.push(head);
+        if (lists.empty())
+            return nullptr;
 
-        ListNode *head = nullptr;
-        ListNode *previous = nullptr;
-        while (!minHeap.empty()) {
-            ListNode *top = minHeap.top();
-            minHeap.pop();
+        for (int interval = 1; interval < lists.size(); interval *= 2)
+            for (int i = 0; i < lists.size() - interval; i += interval * 2)
+                lists[i] = mergeTwoLists(lists[i], lists[i + interval]);
 
-            if (head == nullptr) head = top;
-            else previous->next = top;
-
-            if (top->next != nullptr) 
-                minHeap.push(top->next);
-
-            previous = top;
-        }
-
-        return head;
+        return lists[0];
     }
 };
