@@ -12,13 +12,10 @@ public:
         for (int j = 1; j < dpVector[0].size(); j++)
             dpVector[0][j] = false;
 
-        for (int i = 1; i < dpVector.size(); i++) {
-            for (int j = 1; j < dpVector[0].size(); j++) {
-                dpVector[i][j] = dpVector[i][j] || dpVector[i-1][j];
-                if (nums[i-1] <= j) dpVector[i][j] = dpVector[i][j] || dpVector[i-1][j - nums[i-1]];          
-            }
-        }
-        
+        for (int i = 1; i < dpVector.size(); i++)
+            for (int j = 1; j < dpVector[0].size(); j++)
+                dpVector[i][j] = dpVector[i-1][j] || (nums[i-1] <= j ? dpVector[i-1][j - nums[i-1]] : 0);
+       
         return dpVector[nums.size()][targetSum];
     }
 };
