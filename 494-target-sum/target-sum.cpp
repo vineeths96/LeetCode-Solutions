@@ -7,7 +7,6 @@ class Solution {
             else return 0;
         }
         
-        if (currentSum - target + totalSum < 0) return 0;
         if (dpVector[currentIndex][currentSum + totalSum] != -1) 
             return dpVector[currentIndex][currentSum + totalSum];
 
