@@ -1,22 +1,18 @@
 class Solution {
-    std::vector<int> dpVector;
-
-    int minCostClimbingStairsRecursive(const std::vector<int> &cost, int currentIndex) {
-        if (currentIndex >= static_cast<int>(cost.size()))
-            return 0;
-
-        if (dpVector[currentIndex + 1] != -1)
-            return dpVector[currentIndex + 1];
-
-        int oneStep = minCostClimbingStairsRecursive(cost, currentIndex + 1);
-        int twoStep = minCostClimbingStairsRecursive(cost, currentIndex + 2);
-
-        return dpVector[currentIndex + 1] = std::min(oneStep, twoStep) + (currentIndex == -1 ? 0 : cost[currentIndex]);
-    }
-
 public:
     int minCostClimbingStairs(vector<int>& cost) {
-        dpVector = std::vector<int>(cost.size() + 1, -1);
-        return minCostClimbingStairsRecursive(cost, -1);
+        std::vector<int> dpVector(cost.size() + 1, std::numeric_limits<int>::max());
+
+        dpVector[cost.size()] = 0;
+        for (int i = cost.size() - 1; i >= 0; i--) { 
+            int oneStep = std::numeric_limits<int>::max(), twoStep = std::numeric_limits<int>::max();
+            oneStep = dpVector[i + 1];
+            if (i + 2 <= cost.size())
+                twoStep = dpVector[i + 2];
+
+            dpVector[i] = cost[i] + std::min(oneStep, twoStep);
+        }
+
+        return std::min(dpVector[0], dpVector[1]);
     }
 };
