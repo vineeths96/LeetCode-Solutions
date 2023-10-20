@@ -9,25 +9,22 @@ class Solution {
             return dpVector[currentIndex];
 
         int maxSteps = nums[currentIndex];
-        int minSteps = std::numeric_limits<int>::max();
+        int minStepsToEnd = std::numeric_limits<int>::max();
+        for (int step = 1; step <= maxSteps; step++) {
+            if (currentIndex + step >= nums.size()) break;
 
-        if (maxSteps == 0) return minSteps;
-
-        for (int i = 1; i <= maxSteps; i++) {
-            if (currentIndex + i >= nums.size()) break;
-
-            int steps = jumpRecursive(nums, currentIndex + i);
-            if (steps != std::numeric_limits<int>::max()) steps++;
-
-            minSteps = std::min(minSteps, steps);
+            int nextResult = jumpRecursive(nums, currentIndex + step);
+            if (nextResult != std::numeric_limits<int>::max()) 
+                minStepsToEnd = std::min(minStepsToEnd, 1 + nextResult);
         }
 
-        return dpVector[currentIndex] = minSteps;
-    }
+        return dpVector[currentIndex] = minStepsToEnd;
+    } 
+
 
 public:
     int jump(vector<int>& nums) {
-        dpVector = std::vector<int>(nums.size() + 1, -1);
-        return jumpRecursive(nums, 0);    
+        dpVector = std::vector<int>(nums.size(), -1);
+        return jumpRecursive(nums, 0);
     }
 };
