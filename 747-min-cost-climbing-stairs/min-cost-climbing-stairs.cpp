@@ -1,18 +1,11 @@
 class Solution {
 public:
     int minCostClimbingStairs(vector<int>& cost) {
-        std::vector<int> dpVector(cost.size() + 1, std::numeric_limits<int>::max());
+        std::vector<int> dpVector(cost.size() + 1, 0);
 
-        dpVector[cost.size()] = 0;
-        for (int i = cost.size() - 1; i >= 0; i--) { 
-            int oneStep = std::numeric_limits<int>::max(), twoStep = std::numeric_limits<int>::max();
-            oneStep = dpVector[i + 1];
-            if (i + 2 <= cost.size())
-                twoStep = dpVector[i + 2];
+        for (int i = 2; i < dpVector.size(); i++)
+            dpVector[i] = std::min(cost[i - 1] + dpVector[i - 1], cost[i - 2] + dpVector[i - 2]);
 
-            dpVector[i] = cost[i] + std::min(oneStep, twoStep);
-        }
-
-        return std::min(dpVector[0], dpVector[1]);
+        return dpVector[cost.size()];
     }
 };
