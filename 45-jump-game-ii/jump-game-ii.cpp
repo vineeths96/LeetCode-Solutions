@@ -21,7 +21,6 @@ class Solution {
         return dpVector[currentIndex] = minStepsToEnd;
     } 
 
-
 public:
     int jump(vector<int>& nums) {
         dpVector = std::vector<int>(nums.size(), -1);
