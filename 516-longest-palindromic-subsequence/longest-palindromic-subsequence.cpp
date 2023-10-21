@@ -1,31 +1,23 @@
 class Solution {
-    std::vector<std::vector<int>> dpVector;
-
-    int longestPalindromeSubseqRecursive(const std::string &str, int start, int end) {
-        if (start > end) 
-            return 0;
-
-        if (start == end) 
-            return 1;
-
-        if (dpVector[start][end] != -1)
-            return dpVector[start][end];
-
-        int longestLength = 0;
-        if (str[start] == str[end])
-            longestLength = 2 + longestPalindromeSubseqRecursive(str, start + 1, end - 1);
-        else{
-            int first = longestPalindromeSubseqRecursive(str, start, end - 1);
-            int second = longestPalindromeSubseqRecursive(str, start + 1, end);
-            longestLength = std::max(first, second);
-        }
-
-        return dpVector[start][end] = longestLength;
-    }
-
 public:
     int longestPalindromeSubseq(string s) {
-        dpVector = std::vector<std::vector<int>>(s.size() + 1, std::vector<int>(s.size() + 1, -1));
-        return longestPalindromeSubseqRecursive(s, 0, s.size() - 1);
+        std::vector<std::vector<int>> dpVector(s.size(), std::vector<int>(s.size(), 0));
+
+        for (int i = 0; i < dpVector.size(); i++)
+            dpVector[i][i] = 1;
+
+        for (int start = dpVector.size() - 1; start >= 0; start--) {
+            for (int end = start + 1; end < dpVector[0].size(); end++) {
+                int longestLength = 0;
+                if (s[start] == s[end])
+                    longestLength = 2 + dpVector[start + 1][end - 1];
+                else
+                    longestLength = std::max(dpVector[start][end - 1], dpVector[start + 1][end]);
+
+                dpVector[start][end] = longestLength;
+            }
+        }
+
+        return dpVector[0][s.size() - 1];
     }
 };
