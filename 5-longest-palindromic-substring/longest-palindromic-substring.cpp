@@ -1,38 +1,26 @@
 class Solution {
-    int substrStart;
-    int substrEnd;
-    std::vector<std::vector<int>> dpVector;
-
-    bool longestPalindromeRecursive(const std::string &str, int start, int end) {
-        if (start > end)
-            return true;
-
-        if (dpVector[start][end] != -1)
-            return dpVector[start][end] == 1;
-
-        bool longestRemaining = false;
-        if (str[start] == str[end]) {
-            longestRemaining = longestPalindromeRecursive(str, start + 1, end - 1);
-            if (longestRemaining && substrEnd - substrStart + 1 < end - start + 1) {
-                substrStart = start;
-                substrEnd = end;
-            }
-        }
-        
-        if (!longestRemaining) {
-            longestPalindromeRecursive(str, start + 1, end);
-            longestPalindromeRecursive(str, start, end - 1);
-        }
-
-        return dpVector[start][end] = longestRemaining ? 1 : 0;
-    }
-
 public:
     string longestPalindrome(string s) {
-        substrStart = s.size() - 1;
-        substrEnd = 0;
-        dpVector = std::vector<std::vector<int>>(s.size(), std::vector<int>(s.size(), -1)); 
-        longestPalindromeRecursive(s, 0, s.size() - 1);
+        int substrStart = 0;
+        int substrEnd = 0;
+        std::vector<std::vector<bool>> dpVector(s.size(), std::vector<bool>(s.size(), false)); 
+
+        for (int i = 0; i < dpVector.size(); i++)
+            for (int j = 0; j <= i; j++)
+                dpVector[i][j] = true;
+
+        for (int start = dpVector.size() - 1; start >= 0; start--) {
+            for (int end = start + 1; end < dpVector[0].size(); end++) {
+                if (s[start] == s[end] && dpVector[start + 1][end - 1]) {
+                    dpVector[start][end] = true;
+
+                    if (substrEnd - substrStart < end - start) {
+                        substrStart = start;
+                        substrEnd = end;
+                    }
+                }
+            }
+        }
 
         return s.substr(substrStart, substrEnd - substrStart + 1);
     }
