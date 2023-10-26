@@ -1,16 +1,19 @@
 class Solution {
 public:
     int jump(vector<int>& nums) {
-        std::vector<int> dpVector(nums.size(), std::numeric_limits<int>::max());
-        dpVector.back() = 0;
+        int currentRangeEnd = 0;
+        int nextRangeEnd = 0;
 
-        for (int i = nums.size() - 2; i >= 0; i--) {
-            for (int step = 1; step <= nums[i]; step++) {
-                if (i + step < nums.size() && dpVector[i + step] != std::numeric_limits<int>::max())
-                    dpVector[i] = std::min(dpVector[i], 1 + dpVector[i + step]);
+        int jumps = 0;
+        for (int i = 0; i < nums.size() - 1; i++) {
+            nextRangeEnd = std::max(nextRangeEnd, i + nums[i]);
+
+            if (i == currentRangeEnd) {
+                jumps++;
+                currentRangeEnd = nextRangeEnd;
             }
         }
 
-        return dpVector[0];
+        return jumps;
     }
 };
