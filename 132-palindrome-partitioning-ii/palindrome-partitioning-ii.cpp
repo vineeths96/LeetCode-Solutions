@@ -1,13 +1,24 @@
 class Solution {
     std::vector<int> dpVector;
+    std::vector<std::vector<int>> dpVectorPalindrome;
 
     bool isPalindrome(const std::string &str, int start, int end) {
+        if (dpVectorPalindrome[start][end] != -1)
+            return dpVectorPalindrome[start][end] == 1;
+
+        bool result = true;
         while (start < end) {
-            if (str[start++] != str[end--])
-                return false;
+            if (str[start] != str[end]) {
+                result = false;
+                break;
+            } else {
+                if (dpVectorPalindrome[start + 1][end - 1] != -1)
+                    result = dpVectorPalindrome[start + 1][end - 1];
+                    break;
+            }
         }
 
-        return true;
+        return dpVectorPalindrome[start][end] = result ? 1 : 0;
     }
 
     int minCutRecursive(const std::string &str, int currentIndex) {
@@ -29,6 +40,7 @@ class Solution {
 public:
     int minCut(string s) {
         dpVector = std::vector<int>(s.size(), -1);
+        dpVectorPalindrome = std::vector<std::vector<int>>(s.size(), std::vector<int>(s.size(), -1));
         return minCutRecursive(s, 0);
     }
 };
