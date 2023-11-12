@@ -1,34 +1,26 @@
 class Solution {
-    std::vector<std::vector<int>> dpVector;
-
-    int minDistanceRecursive(const std::string &word1, const std::string &word2, int index1, int index2) {
-        if (index1 == word1.size() && index2 == word2.size())
-            return 0;
-
-        if (index1 == word1.size())
-            return word2.size() - index2;
-
-        if (index2 == word2.size())
-            return word1.size() - index1;
-
-        if (dpVector[index1][index2] != -1)
-            return dpVector[index1][index2];
-
-        int distance = std::numeric_limits<int>::max();
-        if (word1[index1] == word2[index2])
-            distance = minDistanceRecursive(word1, word2, index1 + 1, index2 + 1);
-        else {
-            distance = std::min(distance, 1 + minDistanceRecursive(word1, word2, index1 + 1, index2 + 1));
-            distance = std::min(distance, 1 + minDistanceRecursive(word1, word2, index1, index2 + 1));
-            distance = std::min(distance, 1 + minDistanceRecursive(word1, word2, index1 + 1, index2));
-        }
-
-        return dpVector[index1][index2] = distance;
-    }
-
 public:
     int minDistance(string word1, string word2) {
-        dpVector = std::vector<std::vector<int>>(word1.size(), std::vector<int>(word2.size(), -1));
-        return minDistanceRecursive(word1, word2, 0, 0);
+        std::vector<std::vector<int>> dpVector(word1.size() + 1, std::vector<int>(word2.size() + 1, std::numeric_limits<int>::max()));
+        
+        for (int i = 0; i < dpVector.size(); i++)
+            dpVector[i][0] = i;
+
+        for (int j = 0; j < dpVector[0].size(); j++)
+            dpVector[0][j] = j;
+
+        for (int i = 1; i < dpVector.size(); i++) {
+            for (int j = 1; j < dpVector[0].size(); j++) {
+                if (word1[i - 1] == word2[j - 1])
+                    dpVector[i][j] = dpVector[i - 1][j - 1];
+                else {
+                    dpVector[i][j] = std::min(dpVector[i][j], 1 + dpVector[i - 1][j - 1]);
+                    dpVector[i][j] = std::min(dpVector[i][j], 1 + dpVector[i][j - 1]);
+                    dpVector[i][j] = std::min(dpVector[i][j], 1 + dpVector[i - 1][j]);
+                }
+            }
+        }
+
+        return dpVector[word1.size()][word2.size()];
     }
 };
