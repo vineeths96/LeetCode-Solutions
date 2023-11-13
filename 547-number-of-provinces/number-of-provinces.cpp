@@ -39,7 +39,7 @@ public:
             parent[i] = i;
 
         for (int i = 0; i < numNodes; i++) {
-            for (int j = 0; j < numNodes; j++) {
+            for (int j = 0; j < i; j++) {
                 if (isConnected[i][j] && unionSet(i, j))
                     numProvinces--;
             }
