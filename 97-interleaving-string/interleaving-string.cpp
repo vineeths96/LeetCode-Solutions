@@ -1,27 +1,25 @@
 class Solution {
-    std::unordered_map<std::string, bool> dpMap;
-
-    bool isInterleaveRecursive(const std::string &s1, const std::string &s2, const std::string &s3, int index1, int index2, int index3) {
-        if (index3 == s3.size())
-            return index1 == s1.size() && index2 == s2.size();
-
-        std::stringstream dpKey;
-        dpKey << index1 << "|" << index2 << "|" << index3;
-        if (dpMap.find(dpKey.str()) != dpMap.end())
-            return dpMap[dpKey.str()];
-
-        bool result = false;
-        if (index1 < s1.size() && s3[index3] == s1[index1])
-            result = result | isInterleaveRecursive(s1, s2, s3, index1 + 1, index2, index3 + 1);
-
-        if (index2 < s2.size() && s3[index3] == s2[index2])
-            result = result | isInterleaveRecursive(s1, s2, s3, index1, index2 + 1, index3 + 1);
-
-        return dpMap[dpKey.str()] = result;
-    }
-
 public:
     bool isInterleave(string s1, string s2, string s3) {
-        return isInterleaveRecursive(s1, s2, s3, 0, 0, 0);
+        if (s1.size() + s2.size() != s3.size())
+            return false;
+
+        std::vector<std::vector<int>> dpVector(s1.size() + 1, std::vector<int>(s2.size() + 1, false));
+
+        dpVector[0][0] = true;
+        for (int i = 1; i < dpVector.size(); i++)
+            dpVector[i][0] = dpVector[i - 1][0] && s1[i - 1] == s3[i - 1];
+
+        for (int j = 1; j < dpVector[0].size(); j++)
+            dpVector[0][j] = dpVector[0][j - 1] && s2[j - 1] == s3[j - 1];
+
+        for (int i = 1; i < dpVector.size(); i++) {
+            for (int j = 1; j < dpVector[0].size(); j++) {
+                dpVector[i][j] |= dpVector[i - 1][j] && s1[i - 1] == s3[i + j - 1];
+                dpVector[i][j] |= dpVector[i][j - 1] && s2[j - 1] == s3[i + j - 1];
+            }
+        }
+
+        return dpVector[s1.size()][s2.size()];
     }
 };
