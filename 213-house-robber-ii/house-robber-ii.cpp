@@ -1,13 +1,14 @@
 class Solution {
     int robHouses(const std::vector<int> &nums, int start, int end) {
-        std::vector<int> dpVector(nums.size() + 1, 0);
+        int twoStep = 0;
+        int oneStep = 0;
+        for (int i = start; i <= end; i++) {
+            int holder = oneStep;
+            oneStep = std::max(nums[i] + twoStep, oneStep);
+            twoStep = holder;
+        }
 
-        dpVector[0] = 0;
-        dpVector[1] = nums[start];
-        for (int i = 2; i <= end - start + 1; i++)
-            dpVector[i] = std::max(nums[start + i - 1] + dpVector[i - 2], dpVector[i - 1]);
-
-        return dpVector[end - start + 1];
+        return oneStep;
     }
 
 public:
