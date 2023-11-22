@@ -1,28 +1,25 @@
 class Solution {
-    std::vector<std::vector<int>> dpVector;
-
-    int numDecodingsRecursive(const std::string &str, int currentIndex, int prevDigit) {
-        if (currentIndex == str.size()) 
-            return 1;
-
-        if (dpVector[currentIndex][prevDigit + 1] != -1)
-            return dpVector[currentIndex][prevDigit + 1];
-
-        int numWays = 0;
-        int currentDigit = str[currentIndex] - '0';
-        int potentialNumber = prevDigit * 10 + currentDigit;
-        if (prevDigit != -1 && potentialNumber <= 26)
-            numWays += numDecodingsRecursive(str, currentIndex + 1, potentialNumber);
-
-        if (currentDigit > 0 && currentDigit <= 9)
-            numWays += numDecodingsRecursive(str, currentIndex + 1, currentDigit);
-
-        return dpVector[currentIndex][prevDigit + 1] = numWays;
-    }
-
 public:
     int numDecodings(string s) {
-        dpVector = std::vector<std::vector<int>>(s.size(), std::vector<int>(28, -1));
-        return numDecodingsRecursive(s, 0, -1);
+        if (s.empty() || s[0] == '0')
+            return 0;
+    
+        std::vector<int> dpVector(s.size() + 1, 0);
+        dpVector[0] = 1;
+        dpVector[1] = 1;
+        for (int i = 2; i < dpVector.size(); i++) {
+            std::string potentialNumber;
+            potentialNumber.push_back(s[i - 2]);
+            potentialNumber.push_back(s[i - 1]);
+            int potentialNumberInt = std::stoi(potentialNumber);
+            if (potentialNumberInt >= 10 && potentialNumberInt <= 26)
+                dpVector[i] += dpVector[i - 2];
+
+            int currentNumber = s[i - 1] - '0';
+            if (currentNumber > 0 && currentNumber <= 9)
+                dpVector[i] += dpVector[i - 1];
+        }
+
+        return dpVector[s.size()];
     }
 };
