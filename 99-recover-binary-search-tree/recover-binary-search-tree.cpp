@@ -10,39 +10,32 @@
  * };
  */
 class Solution {
-    std::vector<TreeNode*> inOrder;
+    TreeNode *predecessor = nullptr;
+    TreeNode *first = nullptr, *second = nullptr;
 
     void inOrderTraversal(TreeNode *root) {
         if (root == nullptr)
             return;
 
         inOrderTraversal(root->left);
-        inOrder.push_back(root);
+
+        if (predecessor != nullptr && predecessor->val > root->val) {
+            if (first == nullptr) {
+                first = predecessor;
+                second = root;
+            } else {
+                second = root;
+                return;
+            }
+        }
+
+        predecessor = root;
         inOrderTraversal(root->right);
     }
 
 public:
     void recoverTree(TreeNode* root) {
-        if (root == nullptr)
-            return;
-
         inOrderTraversal(root);
-
-        TreeNode *first = nullptr;
-        TreeNode *second = nullptr;
-        for (int i = 0; i < inOrder.size() - 1; i++) {
-            if (inOrder[i]->val < inOrder[i + 1]->val) 
-                continue;
-
-            if (first == nullptr) {
-                first = inOrder[i];
-                second = inOrder[i + 1];
-            } else {
-                second = inOrder[i + 1];
-                break;
-            }
-        }
-
         std::swap(first->val, second->val);
     }
 };
