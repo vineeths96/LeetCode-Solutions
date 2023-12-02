@@ -7,18 +7,15 @@ public:
         while (left < right) {
             int mid = left + (right - left) / 2;
 
-            if (nums[left] < nums[right])
-                return nums[left];
-
             if (nums[left] == nums[mid] && nums[mid] == nums[right]) {
                 left++;
                 right--;
-            } else if (nums[left] <= nums[mid])
-                left = mid + 1;
-            else
+            } else if (nums[mid] <= nums[right])
                 right = mid;
+            else
+                left = mid + 1;
         }
 
         return nums[left];
     }
-};
+}; 
