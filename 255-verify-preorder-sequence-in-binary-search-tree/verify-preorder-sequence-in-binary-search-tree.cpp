@@ -3,17 +3,19 @@ public:
     bool verifyPreorder(vector<int>& preorder) {
         std::stack<int> monotonicStack;
 
+        int index = 0;
         int lowerBound = std::numeric_limits<int>::min();
         for (int i = 0; i < preorder.size(); i++) {
-            while (!monotonicStack.empty() && monotonicStack.top() < preorder[i]) {
-                lowerBound = monotonicStack.top();
-                monotonicStack.pop();
+            while (index > 0 && preorder[index - 1] < preorder[i]) {
+                lowerBound = preorder[index - 1];
+                index--;
             }
 
             if (preorder[i] < lowerBound)
                 return false;
 
-            monotonicStack.push(preorder[i]);
+            preorder[index] = preorder[i];
+            index++;
         }
 
         return true;
