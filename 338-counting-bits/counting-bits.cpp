@@ -1,10 +1,9 @@
 class Solution {
 public:
     vector<int> countBits(int n) {
-        std::vector<int> bits;
-        for (int i = 0; i <= n; i++) {
-            int ones = __builtin_popcount(i);
-            bits.push_back(ones);
+        std::vector<int> bits(n + 1, 0);
+        for (int i = 1; i <= n; i++) {
+            bits[i] = bits[i & (i - 1)] + 1;
         }
 
         return bits;
