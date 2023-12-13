@@ -1,26 +1,40 @@
 class RandomizedSet {
-    std::unordered_set<int> randSet;
+    std::unordered_map<int, int> numMap;
+    std::vector<int> numVec;
 
 public:
     RandomizedSet() {
-        randSet = std::unordered_set<int>();  
+        numMap = std::unordered_map<int, int>();
+        numVec = std::vector<int>();
     }
     
     bool insert(int val) {
-        return randSet.insert(val).second;
+        if (numMap.contains(val)) return false;
+
+        numMap.insert({val, numVec.size()});
+        numVec.push_back(val);
+
+        return true;
     }
     
     bool remove(int val) {
-        return randSet.erase(val) == 1;
+        if (!numMap.contains(val)) return false;
+        
+        int lastNum = numVec.back();
+        int removeIndex = numMap[val];
+
+        std::swap(numVec[removeIndex], numVec.back());
+        numVec.pop_back();
+
+        numMap[lastNum] = removeIndex;
+        numMap.erase(val);
+
+        return true;
     }
     
     int getRandom() {
-        int index = std::rand() % randSet.size();
-        auto iterator = randSet.begin();
-        for (int i = 0; i < index; i++)
-            iterator++;
-
-        return *iterator;
+        int index = std::rand() % numVec.size();
+        return numVec[index];
     }
 };
 
