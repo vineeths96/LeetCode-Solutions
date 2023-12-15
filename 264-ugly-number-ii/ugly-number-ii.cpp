@@ -1,34 +1,19 @@
 class Solution {
 public:
     int nthUglyNumber(int n) {
-        std::set<long> countedNums;
-        std::priority_queue<long, std::vector<long>, std::greater<long>> minHeap;
+        std::vector<int> uglyNums{1}; 
+        int two = 0, three = 0, five = 0;
 
-        int count = 0;
-        minHeap.push(1);
-        while (!minHeap.empty()) {
-            auto top = minHeap.top();
-            minHeap.pop();
-            
-            count++;
-            if (count == n) return top;
-            
-            if (!countedNums.contains(top * 2)) {
-                countedNums.insert(top * 2);
-                minHeap.push(top * 2);
-            }
+        for (int i = 1; i < n; i++) {
+            int num = std::min(uglyNums[two] * 2, std::min(uglyNums[three] * 3, uglyNums[five] * 5));
 
-            if (!countedNums.contains(top * 3)) {
-                countedNums.insert(top * 3);
-                minHeap.push(top * 3);
-            }
+            uglyNums.push_back(num);
 
-            if (!countedNums.contains(top * 5)) {
-                countedNums.insert(top * 5);
-                minHeap.push(top * 5);
-            }
+            if (num == uglyNums[two] * 2) two++;
+            if (num == uglyNums[three] * 3) three++;
+            if (num == uglyNums[five] * 5) five++;
         }
 
-        return -1;
+        return uglyNums[n - 1];
     }
 };
