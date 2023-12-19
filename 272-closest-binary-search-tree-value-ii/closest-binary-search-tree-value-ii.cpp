@@ -11,7 +11,7 @@
  */
 class Solution {
     double target;
-    std::priority_queue<std::pair<double, int>, std::vector<std::pair<double, int>>, std::less<std::pair<double, int>>> maxHeap;
+    std::deque<int> deque;
 
     void inorderTraversal(TreeNode *root, int k) {
         if (root == nullptr)
@@ -19,9 +19,13 @@ class Solution {
 
         inorderTraversal(root->left, k);
 
-        maxHeap.push({std::abs(root->val - target), root->val});
-        if (maxHeap.size() > k)
-            maxHeap.pop();
+        deque.push_back(root->val);
+        if (deque.size() > k) {
+            if (std::abs(deque.front() - target) < std::abs(deque.back() - target))
+                deque.pop_back();
+            else
+                deque.pop_front();
+        }
 
         inorderTraversal(root->right, k); 
     }
@@ -33,9 +37,9 @@ public:
         inorderTraversal(root, k);
         
         std::vector<int> kClose;
-        while (!maxHeap.empty()) {
-            kClose.push_back(maxHeap.top().second);
-            maxHeap.pop();
+        while (!deque.empty()) {
+            kClose.push_back(deque.front());
+            deque.pop_front();
         }
 
         return kClose;
