@@ -3,28 +3,25 @@ public:
     string parseTernary(string expression) {
         std::string charStack;
 
-        bool sawQues = false;
         for (int i = expression.size() - 1; i >= 0; i--) {
-            char ch = expression[i];
-            if (sawQues) {
-                char t = charStack.back();
+            if (!charStack.empty() && charStack.back() == '?') {
                 charStack.pop_back();
 
-                char f = charStack.back();
+                char trueCase = charStack.back();
                 charStack.pop_back();
 
-                if (ch == 'T') charStack.push_back(t);
-                else charStack.push_back(f);
+                charStack.pop_back();
+                char falseCase = charStack.back();
+                charStack.pop_back();
 
-                sawQues = false;
-            } else {
-                if (std::isalpha(ch) || std::isdigit(ch))
-                    charStack.push_back(ch);
-                else if (ch == '?')
-                    sawQues = true;
-            }
+                if (expression[i] == 'T')
+                    charStack.push_back(trueCase);
+                else
+                    charStack.push_back(falseCase);
+            } else
+                charStack.push_back(expression[i]);
         }
 
-        return std::string(1, charStack.back());
+        return charStack;
     }
 };
