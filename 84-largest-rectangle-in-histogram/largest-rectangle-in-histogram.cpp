@@ -10,12 +10,7 @@ public:
                 int top = monotonicStack.top();
                 monotonicStack.pop();
 
-                int currentArea = 0;
-                if (monotonicStack.empty())
-                    currentArea = heights[top] * i;
-                else
-                    currentArea = heights[top] * (i - monotonicStack.top() - 1);
-
+                int currentArea = heights[top] * (i - monotonicStack.top() - 1);
                 area = std::max(area, currentArea);
             }
 
