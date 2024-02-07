@@ -1,17 +1,13 @@
 class Solution {
 public:
     char findTheDifference(string s, string t) {
-        std::unordered_map<char, int> charFreqMap;
+        int charBitRep = 0;
         for (const char &ch : s)
-            charFreqMap[ch]++;
+            charBitRep = charBitRep ^ 1 << (ch - 'a');
 
-        for (const char &ch : t) {
-            charFreqMap[ch]--;
+        for (const char &ch : t)
+            charBitRep = charBitRep ^ 1 << (ch - 'a');
 
-            if (charFreqMap[ch] == 0)
-                charFreqMap.erase(ch);
-        }
-
-        return charFreqMap.begin()->first;
+        return 'a' + std::log2(charBitRep);
     }
 };
